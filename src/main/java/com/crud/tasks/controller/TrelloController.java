@@ -24,7 +24,15 @@ public class TrelloController {
 
         trelloBoards.stream()
                 .filter(t->t.getName()!=null&&t.getId()!=null&&t.getName().contains("Kodilla"))
-                .forEach(trelloBoardDto -> System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName()));
+                .forEach(trelloBoardDto -> {
 
+            System.out.println(trelloBoardDto.getName() + " - " + trelloBoardDto.getId());
+
+            System.out.println("This board contains lists: ");
+
+            trelloBoardDto.getLists().forEach(trelloList ->
+                    System.out.println(trelloList.getName() + " - " + trelloList.getId() + " - " + trelloList.isClosed()));
+
+        });
     }
 }
