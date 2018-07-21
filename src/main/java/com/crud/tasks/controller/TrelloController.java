@@ -1,15 +1,17 @@
 package com.crud.tasks.controller;
 
+import com.crud.tasks.domain.CreatedTrelloCard;
 import com.crud.tasks.domain.TrelloBoardDto;
+import com.crud.tasks.domain.TrelloCardDto;
 import com.crud.tasks.trello.client.TrelloClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.constraints.NotNull;
+import java.net.URI;
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/v1/trello")
 public class TrelloController {
@@ -34,5 +36,9 @@ public class TrelloController {
                     System.out.println(trelloList.getName() + " - " + trelloList.getId() + " - " + trelloList.isClosed()));
 
         });
+    }
+    @RequestMapping(method=RequestMethod.POST,value="createTrelloCard")
+    public CreatedTrelloCard createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
+        return trelloClient.createNewCard(trelloCardDto);
     }
 }
