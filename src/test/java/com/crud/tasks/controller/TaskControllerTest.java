@@ -35,16 +35,11 @@ public class TaskControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
-    @MockBean
+    @Mock
     private TaskMapper taskMapper;
 
     @Mock
     private DbService service;
-
-    @Mock
-    private TaskDto taskDto;
-
 
     @Test
     public void shouldFetchTasks() throws Exception {
@@ -74,6 +69,7 @@ public class TaskControllerTest {
     public void shouldFetchTask() throws Exception {
         //Given
         Task task1 = new Task(1L, "Test task", "content1");
+        TaskDto taskDto = new TaskDto(1L, "Test task", "content1");
 
         when(taskMapper.mapToTaskDto(task1)).thenReturn(taskDto);
 
@@ -91,6 +87,7 @@ public class TaskControllerTest {
     @Test
     public void shouldDeleteTask() throws Exception {
         Task task1 = new Task(1L, "Test task", "content1");
+        TaskDto taskDto = new TaskDto(1L, "Test task", "content1");
 
         when(taskMapper.mapToTaskDto(task1)).thenReturn(taskDto);
 
@@ -115,7 +112,7 @@ public class TaskControllerTest {
     public void shouldCreateTask() throws Exception {
         //Given
         Task task1 = new Task(1L, "Test task", "content1");
-
+        TaskDto taskDto = new TaskDto(1L, "Test task", "content1");
 
         when(service.saveTask(taskMapper.mapToTask(any(TaskDto.class)))).thenReturn(task1);
 
@@ -143,7 +140,7 @@ public class TaskControllerTest {
 
 
         Gson gson = new Gson();
-        String jsonContent = gson.toJson(taskDto);
+        String jsonContent = gson.toJson(taskDto2);
 
 
         //When & Then
