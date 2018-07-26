@@ -9,6 +9,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static java.util.Optional.ofNullable;
 
 @Service
@@ -31,19 +33,16 @@ public class SimpleEmailService {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
         }
     }
-        private SimpleMailMessage createMailMessage(final Mail mail) {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(mail.getMailTo());
-            mailMessage.setSubject(mail.getSubject());
-            mailMessage.setText(mail.getMessage());
-            mailMessage.setCc(ofNullable(mail.getToCC()).orElse(""));
 
-            try {
-           mailMessage.setCc(mail.getToCC());
-            } catch (NullPointerException e) {
-            }
-        return mailMessage;
-
-
+    private SimpleMailMessage createMailMessage(final Mail mail) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(mail.getMailTo());
+        mailMessage.setSubject(mail.getSubject());
+        mailMessage.setText(mail.getMessage());
+        if (Optional.ofNullable(mail.getToCC()).isPresent()) {
+            mailMessage.setCc(mail.getToCC());
+        }
+            return mailMessage;
         }
     }
+
