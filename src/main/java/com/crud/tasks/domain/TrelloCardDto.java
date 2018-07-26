@@ -3,7 +3,7 @@ package com.crud.tasks.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
+//@AllArgsConstructor
 @Getter
 public class TrelloCardDto {
     private String name;
@@ -11,4 +11,13 @@ public class TrelloCardDto {
     private String pos;
     private String listId;
    // private Badges badges;
+
+    public TrelloCardDto(){}
+
+    public TrelloCardDto(String name, String description, String pos, String listId) {
+        this.name = name;
+        this.description = description;
+        this.pos = pos;
+        this.listId = listId;
+    }
 }
