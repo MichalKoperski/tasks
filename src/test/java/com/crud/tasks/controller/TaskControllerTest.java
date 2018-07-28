@@ -29,16 +29,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(TrelloController.class)
+@WebMvcTest(TaskController.class)
 public class TaskControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @MockBean
     private TaskMapper taskMapper;
 
-    @Mock
+    @MockBean
     private DbService service;
 
     @Test
