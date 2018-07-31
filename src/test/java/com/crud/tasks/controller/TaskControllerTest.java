@@ -43,53 +43,50 @@ public class TaskControllerTest {
 
     @Test
     public void shouldFetchTasks() throws Exception {
-        //Given
-        Task task1 = new Task(1L, "Test task", "content1");
-        List<Task> taskLists = new ArrayList<>();
-        taskLists.add(task1);
 
+        List<TaskDto> tasksDtoList = new ArrayList<>();
+        TaskDto taskDto1 = new TaskDto(1L, "Title", "content");
+        tasksDtoList.add(taskDto1);
 
-        TaskDto taskDto1 = new TaskDto(1L, "Test task", "content1");
-        List<TaskDto> taskListsDto = new ArrayList<>();
-        taskListsDto.add(taskDto1);
-
-
-        when(taskMapper.mapToTaskDtoList(taskLists)).thenReturn(taskListsDto);
+        List<Task> tasks = new ArrayList<>();
+        when(taskMapper.mapToTaskDtoList(any(List.class))).thenReturn(tasksDtoList);
 
         //When & Then
         mockMvc.perform(get("/v1/task/getTasks").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$",hasSize(1)))
-                .andExpect(jsonPath("$[0].id",is(1L)))
-                .andExpect(jsonPath("$[0].title",is("Test task")))
-                .andExpect(jsonPath("$[0].content",is("content1")));
+                .andExpect(jsonPath("$[0].id",is(1)))
+                .andExpect(jsonPath("$[0].title",is("Title")))
+                .andExpect(jsonPath("$[0].content",is("content")));
 
     }
     @Test
     public void shouldFetchTask() throws Exception {
         //Given
-        Task task1 = new Task(1L, "Test task", "content1");
-        TaskDto taskDto = new TaskDto(1L, "Test task", "content1");
+        TaskDto taskDto1 = new TaskDto(1L, "Title", "content");
 
-        when(taskMapper.mapToTaskDto(task1)).thenReturn(taskDto);
+        Task task1 = new Task(1L, "Title", "content");
+
+        when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(taskDto1);
 
 
         //When & Then
         mockMvc.perform(get("/v1/task/getTask").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$",hasSize(1)))
-                .andExpect(jsonPath("$.id",is(1L)))
-                .andExpect(jsonPath("$.title",is("Test task")))
-                .andExpect(jsonPath("$.content",is("content1")));
+                .andExpect(jsonPath("$.id",is(1)))
+                .andExpect(jsonPath("$.title",is("Title")))
+                .andExpect(jsonPath("$.content",is("content")));
 
     }
 
     @Test
     public void shouldDeleteTask() throws Exception {
-        Task task1 = new Task(1L, "Test task", "content1");
-        TaskDto taskDto = new TaskDto(1L, "Test task", "content1");
+        TaskDto taskDto1 = new TaskDto(1L, "Title", "content");
 
-        when(taskMapper.mapToTaskDto(task1)).thenReturn(taskDto);
+        Task task1 = new Task(1L, "Title", "content");
+
+        when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(taskDto1);
 
 
         //When & Then
