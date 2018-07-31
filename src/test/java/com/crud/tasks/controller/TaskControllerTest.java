@@ -40,7 +40,6 @@ public class TaskControllerTest {
 
     @MockBean
     private DbService service;
-    oo
 
     @Test
     public void shouldFetchTasks() throws Exception {
