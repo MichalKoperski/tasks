@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.hasSize;
@@ -67,16 +68,19 @@ public class TaskControllerTest {
 
         Task task1 = new Task(1L, "Title", "content");
 
+        when(service.getTask(1L)).thenReturn(Optional.of(task1));
         when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(taskDto1);
 
 
+
         //When & Then
-        mockMvc.perform(get("/v1/task/getTask").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$",hasSize(1)))
-                .andExpect(jsonPath("$.id",is(1)))
-                .andExpect(jsonPath("$.title",is("Title")))
-                .andExpect(jsonPath("$.content",is("content")));
+        mockMvc.perform(get("/v1/task/getTask?taskId=1").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id",is(1)))
+        .andExpect(jsonPath("$.title",is("Title")))
+        .andExpect(jsonPath("$.content",is("content")));
+
+
 
     }
 
@@ -86,21 +90,20 @@ public class TaskControllerTest {
 
         Task task1 = new Task(1L, "Title", "content");
 
+        when(service.getTask(1L)).thenReturn(Optional.of(task1));
         when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(taskDto1);
 
 
         //When & Then
-        mockMvc.perform(get("/v1/task/getTask").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/task/getTask?taskId=1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$",hasSize(1)))
-                .andExpect(jsonPath("$.id",is(1L)))
-                .andExpect(jsonPath("$.title",is("Test task")))
-                .andExpect(jsonPath("$.content",is("content1")));
+                .andExpect(jsonPath("$.id",is(1)))
+                .andExpect(jsonPath("$.title",is("Title")))
+                .andExpect(jsonPath("$.content",is("content")));
 
         service.deleteTask(1L);
-        mockMvc.perform(delete("/v1/task/deleteTask").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$",hasSize(0)));
+        mockMvc.perform(delete("/v1/task/deleteTask?taskId=1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
 
@@ -108,24 +111,25 @@ public class TaskControllerTest {
     @Test
     public void shouldCreateTask() throws Exception {
         //Given
-        Task task1 = new Task(1L, "Test task", "content1");
-        TaskDto taskDto = new TaskDto(1L, "Test task", "content1");
+        TaskDto taskDto1 = new TaskDto(1L, "Title", "content");
 
-        when(service.saveTask(taskMapper.mapToTask(any(TaskDto.class)))).thenReturn(task1);
+        Task task1 = new Task(1L, "Title", "content");
+
+        when(service.saveTask(task1)).thenReturn(task1);
+        when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(taskDto1);
 
 
         Gson gson = new Gson();
-        String jsonContent = gson.toJson(taskDto);
+        String jsonContent = gson.toJson(taskDto1);
 
 
         //When & Then
-        mockMvc.perform(post("/v1/task/createTask")
-                .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/v1/task/createTask").contentType(MediaType.APPLICATION_JSON))
                 .characterEncoding("UTF-8")
-                .content(jsonContent))
-                .andExpect(jsonPath("$.id", is(1L)))
-                .andExpect(jsonPath("$.title", is("Test task")))
-                .andExpect(jsonPath("$.content", is("content1")));
+                .content(jsonContent)
+                .andExpect(jsonPath("$.id",is(1)))
+                .andExpect(jsonPath("$.title",is("Title")))
+                .andExpect(jsonPath("$.content",is("content")));
     }
     @Test
     public void shouldUpdateTask() throws Exception {
