@@ -115,42 +115,45 @@ public class TaskControllerTest {
 
         Task task1 = new Task(1L, "Title", "content");
 
-        when(service.saveTask(task1)).thenReturn(task1);
+      //  when(service.saveTask(taskMapper.mapToTask(any(TaskDto.class)))).thenReturn(task1);
+        when(service.saveTask(any(Task.class))).thenReturn(task1);
         when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(taskDto1);
-
 
         Gson gson = new Gson();
         String jsonContent = gson.toJson(taskDto1);
 
-
         //When & Then
-        mockMvc.perform(post("/v1/task/createTask").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post("/v1/task/createTask")
+                .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content(jsonContent)
+                .content(jsonContent))
                 .andExpect(jsonPath("$.id",is(1)))
                 .andExpect(jsonPath("$.title",is("Title")))
                 .andExpect(jsonPath("$.content",is("content")));
     }
+
     @Test
     public void shouldUpdateTask() throws Exception {
         //Given
-        TaskDto taskDto1 = new TaskDto(1L, "Test task", "content1");
-        TaskDto taskDto2 = new TaskDto(1L, "Test task2", "content2");
+        Task task1 = new Task(1L, "TestTask", "content1");
 
-        when(taskMapper.mapToTaskDto(service.saveTask(taskMapper.mapToTask(taskDto1)))).thenReturn(taskDto2);
+        TaskDto taskDto1 = new TaskDto(1L, "TestTask1", "content1");
+        TaskDto taskDto2 = new TaskDto(1L, "TestTask2", "content2");
 
+        when(service.saveTask(taskMapper.mapToTask(any(TaskDto.class)))).thenReturn(task1);
+        when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(taskDto2);
 
         Gson gson = new Gson();
-        String jsonContent = gson.toJson(taskDto2);
-
+        String jsonContent = gson.toJson(taskDto1);
 
         //When & Then
         mockMvc.perform(put("/v1/task/updateTask")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
-                .andExpect(jsonPath("$.id", is(1L)))
-                .andExpect(jsonPath("$.title", is("Test task2")))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.title", is("TestTask2")))
                 .andExpect(jsonPath("$.content", is("content2")));
     }
+
 }
