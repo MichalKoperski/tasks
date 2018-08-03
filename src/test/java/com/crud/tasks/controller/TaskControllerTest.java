@@ -49,7 +49,7 @@ public class TaskControllerTest {
         TaskDto taskDto1 = new TaskDto(1L, "Title", "content");
         tasksDtoList.add(taskDto1);
 
-        List<Task> tasks = new ArrayList<>();
+        //List<Task> tasks = new ArrayList<>();
         when(taskMapper.mapToTaskDtoList(any(List.class))).thenReturn(tasksDtoList);
 
         //When & Then
@@ -115,9 +115,9 @@ public class TaskControllerTest {
 
         Task task1 = new Task(1L, "Title", "content");
 
-      //  when(service.saveTask(taskMapper.mapToTask(any(TaskDto.class)))).thenReturn(task1);
-        when(service.saveTask(any(Task.class))).thenReturn(task1);
-        when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(taskDto1);
+        when(service.saveTask(taskMapper.mapToTask(taskDto1))).thenReturn(task1);
+       // when(service.saveTask(any(Task.class))).thenReturn(task1);
+       // when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(taskDto1);
 
         Gson gson = new Gson();
         String jsonContent = gson.toJson(taskDto1);
@@ -140,7 +140,7 @@ public class TaskControllerTest {
         TaskDto taskDto1 = new TaskDto(1L, "TestTask1", "content1");
         TaskDto taskDto2 = new TaskDto(1L, "TestTask2", "content2");
 
-        when(service.saveTask(taskMapper.mapToTask(any(TaskDto.class)))).thenReturn(task1);
+        //when(service.saveTask(taskMapper.mapToTask(any(TaskDto.class)))).thenReturn(task1);
         when(taskMapper.mapToTaskDto(any(Task.class))).thenReturn(taskDto2);
 
         Gson gson = new Gson();
