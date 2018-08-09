@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity(name="tasks")
 public class Task {
     @Id
@@ -18,4 +16,11 @@ public class Task {
     private String title;
     @Column(name="description")
     private String content;
+
+    public Task(Long id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+    public Task() {}
 }
