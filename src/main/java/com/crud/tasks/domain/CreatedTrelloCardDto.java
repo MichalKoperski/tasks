@@ -8,7 +8,6 @@ import lombok.Getter;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Getter
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CreatedTrelloCardDto {
@@ -22,4 +21,11 @@ public class CreatedTrelloCardDto {
     @JsonProperty("shortUrl")
     private String shortUrl;
 
+    public CreatedTrelloCardDto(String id, String name, String shortUrl) {
+        this.id = id;
+        this.name = name;
+        this.shortUrl = shortUrl;
+    }
+
+    public CreatedTrelloCardDto() {}
 }
