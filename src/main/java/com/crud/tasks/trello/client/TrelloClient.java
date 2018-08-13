@@ -29,18 +29,8 @@ public class TrelloClient {
     @Autowired
     private TrelloConfig trelloConfig;
 
-  //  @Value("${trello.api.endpoint.prod}")
- //   private String trelloApiEndpoint;
-
-  //  @Value("${trello.app.key}")
-  //  private String trelloAppKey;
-
- //   @Value("${trello.app.token}")
-  //  private String trelloToken;
-
     @Value("${trello.app.username}")
     private String trelloUsername;
-
 
     @Autowired
     private RestTemplate restTemplate;
@@ -64,7 +54,6 @@ public class TrelloClient {
             return new ArrayList<>();
         }
     }
-
     public CreatedTrelloCardDto createNewCard(TrelloCardDto trelloCardDto) {
 
         URI url = UriComponentsBuilder.fromHttpUrl(trelloConfig.getTrelloApiEndpoint() + "/cards")
@@ -74,8 +63,7 @@ public class TrelloClient {
                 .queryParam("desc", trelloCardDto.getDescription())
                 .queryParam("pos", trelloCardDto.getPos())
                 .queryParam("idList", trelloCardDto.getListId()).build().encode().toUri();
-              //  .queryParam("badges",trelloCardDto.getBadges())
-        return restTemplate.postForObject(buildUrl(), null, CreatedTrelloCardDto.class);
+
+        return restTemplate.postForObject(url, null, CreatedTrelloCardDto.class);
     }
 }
-

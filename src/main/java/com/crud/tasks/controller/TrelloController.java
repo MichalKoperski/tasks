@@ -25,5 +25,5 @@ public class TrelloController {
     public CreatedTrelloCardDto createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
         return trelloFacade.createCard(trelloCardDto);
     }
-
 }
+
