@@ -1,6 +1,7 @@
 package com.crud.tasks.service;
 
 import com.crud.tasks.config.AdminConfig;
+import com.crud.tasks.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class MailCreatorService {
 
     @Autowired
     private AdminConfig adminConfig;
+    @Autowired
+    private TaskRepository taskRepository;
+
     @Autowired
     @Qualifier("templateEngine")
     private TemplateEngine templateEngine;
@@ -38,6 +42,23 @@ public class MailCreatorService {
         context.setVariable("application_functionality", functionality);
         context.setVariable("companyInfo", adminConfig.getCompanyName()+" "+adminConfig.getEmail());
         return templateEngine.process("mail/created-trello-card-mail",context);
+    }
+    public String buildDbEmail() {
+        String taskSelector;
+        long size = taskRepository.count();
+        if (size > 1) {
+            taskSelector=" tasks";
+        } else {
+            taskSelector=" task";
+        }
+        Context context = new Context();
+        context.setVariable("preview", "Info about number of tasks");
+        context.setVariable("user", "Kodilla User");
+        context.setVariable("message","Currently in database you got: " + size + taskSelector);
+        context.setVariable("is_admin", false);
+        context.setVariable("admin_config", adminConfig);
+        context.setVariable("companyInfo", adminConfig.getCompanyName()+" "+adminConfig.getEmail());
+        return templateEngine.process("mail/dbMail",context);
     }
 
 }
