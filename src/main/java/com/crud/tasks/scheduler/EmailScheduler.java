@@ -23,6 +23,12 @@ public class EmailScheduler {
     private AdminConfig adminConfig;
 
     @Scheduled(cron = "0 0 10 * * *")
+    public void sendDbInformationEmail() {
+        simpleEmailService.sendDb(new Mail(
+                adminConfig.getAdminMail(),
+                SUBJECT));
+    }
+   /* @Scheduled(cron = "0 0 10 * * *")
     public void sendInformationEmail() {
         String taskSelector;
         long size = taskRepository.count();
@@ -37,10 +43,5 @@ public class EmailScheduler {
                 "Currently in database you got: " + size + taskSelector));
 
     }
-    @Scheduled(cron = "0 0 10 * * *")
-    public void sendDbInformationEmail() {
-        simpleEmailService.sendDb(new Mail(
-                adminConfig.getAdminMail(),
-                SUBJECT));
-    }
+    */
 }
